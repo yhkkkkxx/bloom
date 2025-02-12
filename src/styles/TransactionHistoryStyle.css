@@ -1,0 +1,16 @@
+.account {
+  position: relative;
+  z-index: 1;
+}
+
+.account::before {
+  content: '';
+  position: absolute;
+  top: -10px; /* 부모 영역을 넘어 확장 */
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  background-color: rgba(255, 0, 0, 0.5); /* 반투명 빨강 */
+  z-index: -1; /* 자식보다 뒤로 보내기 */
+  border-radius: 10px;
+}

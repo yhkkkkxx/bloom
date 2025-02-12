@@ -1,0 +1,99 @@
+.calendar-container {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.calendar {
+  display: flex;
+  flex-direction: column;
+}
+.calendar-table {
+  width: 100%;
+  table-layout: fixed; /* 테이블 셀 크기 균등하게 유지 */
+}
+
+.calendar-table td {
+  padding: 3.5%; /* 여백 조정 */
+}
+
+.weekday-row {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 10px;
+}
+
+.weekday {
+  font-weight: bold;
+  color: #555;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.day {
+  width: calc(100% / 7);
+  padding: 15px;
+  margin: 5px 0;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+  font-size: 15px;
+  width: 10px;
+  height: 10px;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .day {
+    width: 30px;
+    height: 30px;
+    font-size: 12px;
+  }
+}
+
+/* 기본 스타일 */
+.day {
+  padding: 10px;
+  text-align: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 0; /* 기본적으로는 네모 */
+}
+
+/* 좌측과 우측 모서리를 둥글게 하기 위한 클래스 */
+.rounded-left {
+  border-top-left-radius: 50%;
+  border-bottom-left-radius: 50%;
+}
+
+.rounded-right {
+  border-top-right-radius: 50%;
+  border-bottom-right-radius: 50%;
+}
+
+.today {
+  background-color: #6464f4;
+  color: #ffffff;
+  font-weight: bold;
+}
+
+.red {
+  background-color: #ffeaea;
+}
+
+.purple {
+  background-color: #eaeaff;
+}
+
+.empty {
+  background-color: transparent;
+}
+
+/* 기본 날짜의 모서리는 뾰족하게 (기본값) */
+td {
+  border-radius: 0;
+}
