@@ -67,7 +67,7 @@ function Home() {
                 }}
                 onClick={transactionHistoryBtnClick}
               >
-                <strong>3,210,000원</strong>
+                <strong>3,210,000,000원</strong>
               </h4>
               <div style={{ marginBottom: '10px' }}></div>
               <div className="d-flex justify-content-center gap-2">
