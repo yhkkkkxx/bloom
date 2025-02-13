@@ -217,11 +217,11 @@ function CompanyDetailPage() {
     if (company) {
       const userid = 1;
       setSseUrl(
-        `http://${process.env.REACT_APP_BESERVERURI}/transaction/${userid}/price?companyName=${company.company}`
+        `http://13.125.19.104:8080/transaction/${userid}/price?companyName=${company.company}`
       );
 
       setUrl(
-        `http://${process.env.REACT_APP_BESERVERURI}/transaction/${userid}/filter?companyName=${company.company}`
+        `http://13.125.19.104:8080/transaction/${userid}/filter?companyName=${company.company}`
       );
     }
   }, [company]);

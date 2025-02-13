@@ -14,7 +14,6 @@ function StockSimulation() {
     { company: '나주배랑께', shares: 10, price: 13013, variation: -800 },
   ];
 
-
   const backBtnClick = () => {
     navigate('/study');
   };

@@ -7,7 +7,7 @@ function EntireOrderHistory() {
   const [transactions, setTransactions] = useState([]); // transactions 기본값을 빈 배열로 설정
 
   const user = '1';
-  let url = `http://${process.env.REACT_APP_BESERVERURI}/transaction/${user}/list`;
+  let url = `http://13.125.19.104:8080/transaction/${user}/list`;
 
   useEffect(() => {
     getList();

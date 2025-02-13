@@ -9,7 +9,7 @@ function SellStock() {
   const { company } = location.state || {};
   const [quantity, setQuantity] = useState('');
 
-  let url = `http://${process.env.REACT_APP_BESERVERURI}/transaction`;
+  let url = `http://13.125.19.104:8080/transaction`;
 
   if (!company) {
     return <p>회사를 찾을 수 없습니다.</p>;

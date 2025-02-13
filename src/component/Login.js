@@ -20,7 +20,7 @@ function Login() {
   let loginOnChange = (e) => setUserId(e.target.value);
   let pwOnChange = (e) => setUserPw(e.target.value);
 
-  let url = `https://${process.env.REACT_APP_BESERVERURI}/api/users/login`;
+  let url = `https://13.125.19.104:8080/api/users/login`;
   // 'https://13.125.19.104:8080/api/users/login';
 
   // axios.defaults.withCredentials = true; // withCredentials 전역 설정
@@ -97,6 +97,9 @@ function Login() {
       <div style={{ height: '15%' }}></div>
       <div className="row text-start">
         <h1>
+          <strong style={{ color: '#6464f4', fontWeight: '900' }}>BlooM</strong>
+        </h1>
+        <h1>
           <strong>블룸으로 시작하는</strong>
         </h1>
         <h1>
@@ -106,7 +109,7 @@ function Login() {
           지방 은행 계좌 연동으로 함께 시작해보세요!
         </div>
       </div>
-      <div style={{ height: '30%' }}></div>
+      <div style={{ height: '25%' }}></div>
       <div className="row h-25 ">
         <form class="user">
           <div class="form-group">
