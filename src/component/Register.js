@@ -11,7 +11,7 @@ function Register() {
   let [msg, setMsg] = useState('');
   let [checkMsg, setCheckMsg] = useState('');
 
-  let url = 'http://13.125.19.104:8080/api/users';
+  let url = 'https://13.125.19.104:8080/api/users';
 
   let loginOnChange = (e) => setUserId(e.target.value);
   let pwOnChange = (e) => setUserPw(e.target.value);
@@ -19,7 +19,7 @@ function Register() {
   let checkDuplicated = () => {
     let id = userId;
     let checkurl =
-      'http://13.125.19.104:8080/api/users/checkDuplicated/userId/' + id;
+      'https://13.125.19.104:8080/api/users/checkDuplicated/userId/' + id;
 
     axios
       .get(checkurl, {})
@@ -67,7 +67,8 @@ function Register() {
         })
         .then((response) => {
           console.log(userid, password);
-          if (response.status === 200) {
+          console.log(response.status);
+          if (response.status === 202) {
             // const { token, username } = response.data;
 
             // setLocalStorageItem('authState', {
@@ -90,6 +91,7 @@ function Register() {
               navigate('/login');
             }, 1000);
           } else {
+            console.log(response.data);
             console.log('회원가입 실패');
             setMsg('아이디나 비밀번호가 잘못되었습니다.');
           }
@@ -128,13 +130,15 @@ function Register() {
             회원가입
           </span>
         </p>
-        <div style={{ height: '10%' }}></div>
-
+      </div>
+      <div style={{ height: '5%' }}></div>
+      <div>
         <div className="row text-start">
           <p style={{ marginBottom: '5px' }}>
             <span style={{ color: 'gray', fontSize: '1,0em' }}>아이디</span>
           </p>
         </div>
+
         <span
           style={{
             display: 'flex',
@@ -169,15 +173,8 @@ function Register() {
           {checkMsg}
         </div>
       </div>
+      <div style={{ height: '4%' }}></div>
 
-      {/* 
-      <div style={{ height: '3%' }}></div>
-      <div
-        className="check-msg"
-        style={{ fontSize: '0.9em', color: '#F65659' }}
-      >
-        {checkMsg}
-      </div> */}
       <div style={{ height: '3%' }}></div>
 
       <div className="row text-start">

@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import React from 'react';
 
 import {
@@ -15,17 +15,72 @@ import {
   Label,
 } from 'recharts';
 
+const SSEComponent = ({ url }) => {
+  const [data, setData] = useState([]);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const eventSource = new EventSource(url);
+
+    eventSource.onmessage = (event) => {
+      try {
+        const parsedData = JSON.parse(event.data);
+        setData((prevData) => [...prevData, parsedData]); // 기존 데이터에 추가
+      } catch (e) {
+        setError('데이터 처리 중 오류 발생');
+        console.error('데이터 파싱 오류:', e);
+      }
+    };
+
+    eventSource.onerror = () => {
+      setError('서버 연결 오류 발생');
+      eventSource.close();
+    };
+
+    return () => {
+      eventSource.close();
+    };
+  }, [url]);
+
+  return (
+    <div>
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+      <h3>SSE 실시간 데이터</h3>
+      <pre>{JSON.stringify(data, null, 2)}</pre>
+    </div>
+  );
+};
+
 function CompanyDetailPage() {
-  const navigate = useNavigate();
   const location = useLocation();
-  const { company } = location.state || {}; // state에 company가 없으면 빈 객체
+  const navigate = useNavigate();
+  const { company } = location.state || {};
+
+  const [url, setUrl] = useState('');
+  const [data, setData] = useState([]);
+  const [isError, setIsError] = useState(false);
 
   const [profitRate, setProfitRate] = useState(25);
   const [buyPrice, setBuyPrice] = useState(100000);
 
-  if (!company) {
-    return <p>회사를 찾을 수 없습니다.</p>;
-  }
+  // useEffect(() => {
+  //   if (company) {
+  //     const userid = 1;
+  //     setUrl(
+  //       `https://${process.env.REACT_APP_BESERVERURI}/transaction/${userid}/filter?companyName=${company.company}`
+  //     );
+  //     SSEComponent(url);
+  //   }
+  // }, [company]);
+
+
+  useEffect(() => {
+    if (company) {
+      const userid = 1;
+      setUrl(`http://${process.env.REACT_APP_BESERVERURI}/transaction/${userid}/filter?companyName=${company.company}`);
+    }
+  }, [company]);
+
 
   const backBtnClick = () => {
     navigate('/study/stock_simulation');
@@ -196,6 +251,9 @@ function CompanyDetailPage() {
             <span style={{ fontSize: '1.5em', fontWeight: 'bold' }}>차트</span>
           </p>
         </div>
+
+        <h5>{company?.company}</h5>
+        {url && <SSEComponent url={url} />}
 
         <div className="row" style={{ width: '100%' }}>
           <ResponsiveContainer width="100%" height={400}>

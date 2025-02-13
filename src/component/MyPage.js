@@ -6,6 +6,7 @@ import axios from 'axios';
 
 function MyPage() {
   const navigate = useNavigate();
+  let url = 'https://13.125.19.104:8080/api/users/logout';
 
   const menus = [
     '입출금',
@@ -31,17 +32,13 @@ function MyPage() {
     navigate('/study/stock_simulation');
   };
 
-  const menuBtnClick = async (menu) => {
+  const menuBtnClick = (menu) => {
     if (menu === '로그아웃') {
-      try {
-        await axios.post('/api/users/logout');
-        localStorage.removeItem('authToken'); // 토큰 삭제
-        alert('로그아웃 되었습니다.');
-        window.location.href = '/login'; // 로그인 페이지로 이동
-      } catch (error) {
-        console.error('로그아웃 중 오류 발생:', error);
-        alert('로그아웃 실패. 다시 시도해주세요.');
-      }
+      navigate('/login');
+
+      // axios.post(url, {}, { withCredentials: true }).then((response) => {
+      //   console.log(response.status, response.data);
+      // });
     }
   };
 

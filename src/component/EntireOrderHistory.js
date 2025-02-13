@@ -1,116 +1,35 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function EntireOrderHistory() {
   const navigate = useNavigate();
-  const transactions = [
-    {
-      date: '2024-02-01',
-      transactions: [
-        {
-          company: '나주배랑께',
-          price: 5000,
-          time: '09:15',
-          total: 50000,
-        },
-        {
-          company: '(주)딸기사세요',
-          price: 10000,
-          time: '10:30',
-          total: 30000,
-        },
-      ],
-    },
-    {
-      date: '2024-02-02',
-      transactions: [
-        {
-          company: '감자주식회사',
-          price: 15000,
-          time: '11:00',
-          total: 75000,
-        },
-        {
-          company: '나주배랑께',
-          price: 5000,
-          time: '12:30',
-          total: 25000,
-        },
-      ],
-    },
-    {
-      date: '2024-02-03',
-      transactions: [
-        {
-          company: '(주)딸기사세요',
-          price: 10000,
-          time: '13:45',
-          total: 50000,
-        },
-        {
-          company: '감자주식회사',
-          price: 15000,
-          time: '14:20',
-          total: 75000,
-        },
-      ],
-    },
-    {
-      date: '2024-02-04',
-      transactions: [
-        {
-          company: '나주배랑께',
-          price: 5000,
-          time: '15:00',
-          total: 25000,
-        },
-        {
-          company: '(주)딸기사세요',
-          price: 10000,
-          time: '16:10',
-          total: 20000,
-        },
-      ],
-    },
-    {
-      date: '2024-02-05',
-      transactions: [
-        {
-          company: '감자주식회사',
-          price: 15000,
-          time: '09:50',
-          total: 60000,
-        },
-        {
-          company: '나주배랑께',
-          price: 5000,
-          time: '10:30',
-          total: 50000,
-        },
-      ],
-    },
-    {
-      date: '2024-02-06',
-      transactions: [
-        {
-          company: '(주)딸기사세요',
-          price: 10000,
-          time: '11:10',
-          total: 30000,
-        },
-        {
-          company: '감자주식회사',
-          price: 15000,
-          time: '12:00',
-          total: 75000,
-        },
-      ],
-    },
-  ];
+  const [transactions, setTransactions] = useState([]); // transactions 기본값을 빈 배열로 설정
+
+  const user = '1';
+  let url = `http://${process.env.REACT_APP_BESERVERURI}/transaction/${user}/list`;
+
+  useEffect(() => {
+    getList();
+  }, []);
+
+  const getList = () => {
+    axios
+      .get(url)
+      .then((response) => {
+        console.log(response.data); // 받아온 데이터 확인
+        setTransactions(response.data || []); // 데이터를 받아올 때 없으면 빈 배열로 설정
+      })
+      .catch((error) => {
+        console.error('데이터를 가져오는 중 오류가 발생했습니다.', error);
+        setTransactions([]);
+      });
+  };
 
   const backBtnClick = () => {
     navigate('/study/stock_simulation');
   };
+
   return (
     <div>
       <div className="container">
@@ -137,7 +56,7 @@ function EntireOrderHistory() {
         <div style={{ height: '1%' }}></div>
 
         <div className="row">
-          <table class="">
+          <table className="">
             <tr>
               <td
                 colSpan={2}
@@ -153,81 +72,84 @@ function EntireOrderHistory() {
                 최신순 ▼
               </td>
             </tr>
-            {transactions.map((transaction, index) => (
-              <React.Fragment key={index}>
-                <tr>
-                  <td
-                    colSpan={2}
-                    className="text-start"
-                    style={{
-                      color: 'gray',
-                      paddingLeft: '20px',
-                      paddingBottom: '20px',
-                      fontSize: '12px',
-                    }}
-                  >
-                    {transaction.date}
-                  </td>
-                </tr>
-                {transaction.transactions.map((detail, detailIndex) => (
-                  <React.Fragment key={detailIndex}>
-                    <tr>
-                      <td
-                        className="text-start"
+            {Array.isArray(transactions) && transactions.length > 0 ? (
+              transactions.map((transaction, index) => (
+                <React.Fragment key={index}>
+                  {/* <tr>
+                    <td
+                      colSpan={2}
+                      className="text-start"
+                      style={{
+                        color: 'gray',
+                        paddingLeft: '20px',
+                        paddingBottom: '20px',
+                        fontSize: '12px',
+                      }}
+                    >
+                      {transaction.date}
+                    </td>
+                  </tr> */}
+                  <tr>
+                    <td
+                      className="text-start"
+                      style={{
+                        paddingLeft: '20px',
+                      }}
+                    >
+                      <strong>{transaction.companyName}</strong>
+                    </td>
+                    <td
+                      className="text-end"
+                      style={{
+                        paddingRight: '20px',
+                      }}
+                    >
+                      <strong>-{transaction.amount.toLocaleString()}원</strong>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td
+                      className="text-start"
+                      style={{
+                        color: 'gray',
+                        fontSize: '10px',
+                        paddingLeft: '20px',
+                        paddingBottom: '15px',
+                      }}
+                    >
+                      {transaction.date}
+                    </td>
+                    <td
+                      style={{
+                        color: 'gray',
+                        fontSize: '10px',
+                        paddingBottom: '15px',
+                        paddingRight: '20px',
+                      }}
+                      className="text-end"
+                    >
+                      총액: {transaction.amount * transaction.quantity}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td colSpan={2}>
+                      <hr
                         style={{
-                          color: '',
-                          fontSize: '',
-                          paddingLeft: '20px',
+                          margin: '0 0 10px',
+                          border: '0.5px solid #ddd',
                         }}
-                      >
-                        <strong>{detail.company}</strong>
-                      </td>
-                      <td
-                        className="text-end"
-                        style={{
-                          color: '',
-                          fontSize: '',
-                          paddingRight: '20px',
-                        }}
-                      >
-                        <strong>{detail.price.toLocaleString()}원</strong>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td
-                        className="text-start"
-                        style={{
-                          color: 'gray',
-                          fontSize: '10px',
-                          paddingLeft: '20px',
-                          paddingBottom: '15px',
-                        }}
-                      >
-                        {detail.time}
-                      </td>
-                      <td
-                        style={{
-                          color: 'gray',
-                          fontSize: '10px',
-                          paddingBottom: '15px',
-                          paddingRight: '20px',
-                        }}
-                        className="text-end"
-                      >
-                        {detail.total.toLocaleString()}원
-                      </td>
-                    </tr>
-                  </React.Fragment>
-                ))}
-                <tr>
-                  <td colSpan={2}>
-                    <hr
-                      style={{ margin: '0 0 10px', border: '0.5px solid #ddd' }}
-                    />
-                  </td>
-                </tr>
-              </React.Fragment>
-            ))}
+                      />
+                    </td>
+                  </tr>
+                </React.Fragment>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={2} className="text-center">
+                  주문 내역이 없습니다.
+                </td>
+              </tr>
+            )}
           </table>
         </div>
 

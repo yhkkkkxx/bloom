@@ -20,7 +20,10 @@ function Login() {
   let loginOnChange = (e) => setUserId(e.target.value);
   let pwOnChange = (e) => setUserPw(e.target.value);
 
-  let url = 'http://13.125.19.104:8080/api/users/login';
+  let url = `https://${process.env.REACT_APP_BESERVERURI}/api/users/login`;
+  // 'https://13.125.19.104:8080/api/users/login';
+
+  // axios.defaults.withCredentials = true; // withCredentials 전역 설정
 
   let loginBtnClick = () => {
     let id = userId;
@@ -31,12 +34,21 @@ function Login() {
       setMsg('아이디와 비밀번호를 모두 입력해주세요.');
       return;
     }
+    // setMsg('로그인 성공!');
+    // setTimeout(() => {
+    //   navigate('/');
+    // }, 1000);
+
     const login = (userid, password) => {
       axios
-        .post(url, {
-          userId: userid,
-          password: password,
-        })
+        .post(
+          url,
+          {
+            userId: userid,
+            password: password,
+          }
+          // { withCredentials: true }
+        )
         .then((response) => {
           if (response.status === 200) {
             const { username } = response.data;
