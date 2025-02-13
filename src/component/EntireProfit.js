@@ -79,7 +79,7 @@ function EntireProfit() {
           </p>
           <p style={{ marginBottom: '5px' }}>
             <span style={{ fontSize: '1.5em', fontWeight: 'bold' }}>
-              2302450419원
+              169,500원
             </span>
           </p>
         </div>

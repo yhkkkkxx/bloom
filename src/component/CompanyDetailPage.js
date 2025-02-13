@@ -1,6 +1,7 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import React from 'react';
+import axios from 'axios';
 
 import {
   BarChart,
@@ -15,17 +16,30 @@ import {
   Label,
 } from 'recharts';
 
-const SSEComponent = ({ url }) => {
+const SSEComponent = ({ sseUrl, idx }) => {
   const [data, setData] = useState([]);
+  const [priceSummary, setPriceSummary] = useState({
+    currentPrice: 0,
+    gap: 0,
+  });
+  const [summary, setSummary] = useState({
+    currentPrice: 0,
+    gap: 0,
+    rateOfReturn: 0,
+    holdingQuantity: 0,
+    evaluationAmount: 0,
+    purchaseAmount: 0,
+  });
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const eventSource = new EventSource(url);
+    const eventSource = new EventSource(sseUrl);
 
     eventSource.onmessage = (event) => {
       try {
         const parsedData = JSON.parse(event.data);
-        setData((prevData) => [...prevData, parsedData]);
+        setPriceSummary(parsedData.priceSummary);
+        setSummary(parsedData.summary);
       } catch (e) {
         setError('데이터 처리 중 오류 발생');
         console.error('데이터 파싱 오류:', e);
@@ -40,9 +54,148 @@ const SSEComponent = ({ url }) => {
     return () => {
       eventSource.close();
     };
-  }, [url]);
+  }, [sseUrl]);
 
-  console.log(data);
+  if (idx == 0) {
+    return (
+      <div>
+        <p>
+          <span style={{ fontSize: '1.8em' }}>
+            <strong>{priceSummary.currentPrice.toLocaleString()}원</strong>
+          </span>
+          &nbsp; &nbsp;
+          <span
+            style={{
+              fontSize: '0.8em',
+              color: priceSummary.gap > 0 ? 'red' : 'blue',
+            }}
+          >
+            {priceSummary.gap > 0
+              ? `▲ ${priceSummary.gap.toLocaleString()}`
+              : `▼ ${Math.abs(priceSummary.gap).toLocaleString()}`}
+            원
+          </span>
+        </p>
+      </div>
+    );
+  } else {
+    return (
+      <table>
+        <tr
+          style={{
+            borderBottom: '1px solid #ccc',
+          }}
+        >
+          <td
+            style={{
+              paddingLeft: '15px',
+              paddingTop: '10px',
+              paddingBottom: '10px',
+            }}
+            className="text-start"
+          >
+            수익률
+          </td>
+          <td
+            style={{
+              paddingRight: '15px',
+              paddingTop: '10px',
+              paddingBottom: '10px',
+            }}
+            className="text-end"
+          >
+            {summary.rateOfReturn.toLocaleString()}%
+          </td>
+        </tr>
+        <tr
+          style={{
+            borderBottom: '1px solid #ccc',
+          }}
+        >
+          <td
+            style={{
+              paddingLeft: '15px',
+              paddingTop: '10px',
+              paddingBottom: '10px',
+            }}
+            className="text-start"
+          >
+            보유 수량
+          </td>
+          <td
+            style={{
+              paddingRight: '15px',
+              paddingTop: '10px',
+              paddingBottom: '10px',
+            }}
+            className="text-end"
+          >
+            {summary.holdingQuantity}주
+          </td>
+        </tr>
+        <tr
+          style={{
+            borderBottom: '1px solid #ccc',
+          }}
+        >
+          <td
+            style={{
+              paddingLeft: '15px',
+              paddingTop: '10px',
+              paddingBottom: '10px',
+            }}
+            className="text-start"
+          >
+            평가 금액
+          </td>
+          <td
+            style={{
+              paddingRight: '15px',
+              paddingTop: '10px',
+              paddingBottom: '10px',
+            }}
+            className="text-end"
+          >
+            <span
+              style={{
+                fontSize: '0.8em',
+                color: summary.gap > 0 ? 'red' : 'blue',
+              }}
+            >
+              {summary.gap > 0
+                ? `▲ ${summary.gap.toLocaleString()}`
+                : `▼ ${Math.abs(summary.gap).toLocaleString()}`}
+              원
+            </span>
+            &nbsp; &nbsp;
+            {summary.evaluationAmount.toLocaleString()}원
+          </td>
+        </tr>
+        <tr>
+          <td
+            style={{
+              paddingLeft: '15px',
+              paddingTop: '10px',
+              paddingBottom: '10px',
+            }}
+            className="text-start"
+          >
+            매입 금액
+          </td>
+          <td
+            style={{
+              paddingRight: '15px',
+              paddingTop: '10px',
+              paddingBottom: '10px',
+            }}
+            className="text-end"
+          >
+            {summary.purchaseAmount.toLocaleString()}원
+          </td>
+        </tr>
+      </table>
+    );
+  }
 };
 
 function CompanyDetailPage() {
@@ -50,7 +203,10 @@ function CompanyDetailPage() {
   const navigate = useNavigate();
   const { company } = location.state || {};
 
+  const [sseUrl, setSseUrl] = useState('');
   const [url, setUrl] = useState('');
+
+  const [orderHistory, setOrderHistory] = useState([]);
   const [data, setData] = useState([]);
   const [isError, setIsError] = useState(false);
 
@@ -60,11 +216,28 @@ function CompanyDetailPage() {
   useEffect(() => {
     if (company) {
       const userid = 1;
+      setSseUrl(
+        `http://${process.env.REACT_APP_BESERVERURI}/transaction/${userid}/price?companyName=${company.company}`
+      );
+
       setUrl(
         `http://${process.env.REACT_APP_BESERVERURI}/transaction/${userid}/filter?companyName=${company.company}`
       );
     }
   }, [company]);
+
+  useEffect(() => {
+    if (url) {
+      axios
+        .get(url)
+        .then((response) => {
+          setOrderHistory(response.data.transactions);
+        })
+        .catch((error) => {
+          console.error('API 요청 오류:', error);
+        });
+    }
+  }, [url]);
 
   const backBtnClick = () => {
     navigate('/study/stock_simulation');
@@ -145,39 +318,6 @@ function CompanyDetailPage() {
     },
   ];
 
-  const orderHistory = [
-    {
-      date: '2025-02-12',
-      quantity: 10,
-      pricePerShare: 75000,
-      totalPrice: 750000,
-    },
-    {
-      date: '2025-02-11',
-      quantity: 5,
-      pricePerShare: 76000,
-      totalPrice: 380000,
-    },
-    {
-      date: '2025-02-10',
-      quantity: 8,
-      pricePerShare: 75500,
-      totalPrice: 604000,
-    },
-    {
-      date: '2025-02-09',
-      quantity: 12,
-      pricePerShare: 77000,
-      totalPrice: 924000,
-    },
-    {
-      date: '2025-02-08',
-      quantity: 7,
-      pricePerShare: 76500,
-      totalPrice: 535500,
-    },
-  ];
-
   const maxPrice = Math.max.apply(
     null,
     parseData.map((e) => (e ? parseInt(e.highLow[1]) : 0)) // 최고가
@@ -211,25 +351,26 @@ function CompanyDetailPage() {
           <h5 style={{ color: '#495057', marginBottom: '5px' }}>
             {company.company}
           </h5>
-          {url && <SSEComponent url={url} />}
-
-          <p>
-            <span style={{ fontSize: '1.8em' }}>
-              <strong>{company.price.toLocaleString()}원</strong>
-            </span>
-            &nbsp; &nbsp;
-            <span
-              style={{
-                fontSize: '0.8em',
-                color: company.variation > 0 ? 'red' : 'blue',
-              }}
-            >
-              {company.variation > 0
-                ? `▲ ${company.variation}`
-                : `▼ ${Math.abs(company.variation)}`}
-              원
-            </span>
-          </p>
+          {sseUrl && <SSEComponent sseUrl={sseUrl} idx={0} />}
+          {/* <div>
+            <p>
+              <span style={{ fontSize: '1.8em' }}>
+                <strong>{company.price.toLocaleString()}원</strong>
+              </span>
+              &nbsp; &nbsp;
+              <span
+                style={{
+                  fontSize: '0.8em',
+                  color: company.variation > 0 ? 'red' : 'blue',
+                }}
+              >
+                {company.variation > 0
+                  ? `▲ ${company.variation}`
+                  : `▼ ${Math.abs(company.variation)}`}
+                원
+              </span>
+            </p>
+          </div> */}
         </div>
 
         <div className="row text-start">
@@ -237,9 +378,6 @@ function CompanyDetailPage() {
             <span style={{ fontSize: '1.5em', fontWeight: 'bold' }}>차트</span>
           </p>
         </div>
-
-        <h5>{company?.company}</h5>
-        {url && <SSEComponent url={url} />}
 
         <div className="row" style={{ width: '100%' }}>
           <ResponsiveContainer width="100%" height={400}>
@@ -317,120 +455,7 @@ function CompanyDetailPage() {
           </p>
         </div>
         <div className="row">
-          <table>
-            <tr
-              style={{
-                borderBottom: '1px solid #ccc',
-              }}
-            >
-              <td
-                style={{
-                  paddingLeft: '15px',
-                  paddingTop: '10px',
-                  paddingBottom: '10px',
-                }}
-                className="text-start"
-              >
-                수익률
-              </td>
-              <td
-                style={{
-                  paddingRight: '15px',
-                  paddingTop: '10px',
-                  paddingBottom: '10px',
-                }}
-                className="text-end"
-              >
-                {profitRate}%
-              </td>
-            </tr>
-            <tr
-              style={{
-                borderBottom: '1px solid #ccc',
-              }}
-            >
-              <td
-                style={{
-                  paddingLeft: '15px',
-                  paddingTop: '10px',
-                  paddingBottom: '10px',
-                }}
-                className="text-start"
-              >
-                보유 수량
-              </td>
-              <td
-                style={{
-                  paddingRight: '15px',
-                  paddingTop: '10px',
-                  paddingBottom: '10px',
-                }}
-                className="text-end"
-              >
-                {company.shares}주
-              </td>
-            </tr>
-            <tr
-              style={{
-                borderBottom: '1px solid #ccc', // 행 사이에 구분선 추가
-              }}
-            >
-              <td
-                style={{
-                  paddingLeft: '15px',
-                  paddingTop: '10px',
-                  paddingBottom: '10px',
-                }}
-                className="text-start"
-              >
-                평가 금액
-              </td>
-              <td
-                style={{
-                  paddingRight: '15px',
-                  paddingTop: '10px',
-                  paddingBottom: '10px',
-                }}
-                className="text-end"
-              >
-                <span
-                  style={{
-                    fontSize: '0.8em',
-                    color: company.variation > 0 ? 'red' : 'blue',
-                  }}
-                >
-                  {company.variation > 0
-                    ? `▲ ${company.variation}`
-                    : `▼ ${Math.abs(company.variation)}`}
-                  원
-                </span>
-                &nbsp; &nbsp;
-                {company.price.toLocaleString()}원
-              </td>
-            </tr>
-            <tr>
-              <td
-                style={{
-                  paddingLeft: '15px',
-                  paddingTop: '10px',
-                  paddingBottom: '10px',
-                }}
-                className="text-start"
-              >
-                매입 금액
-              </td>
-              <td
-                style={{
-                  paddingRight: '15px',
-                  paddingTop: '10px',
-                  paddingBottom: '10px',
-                }}
-                className="text-end"
-              >
-                {buyPrice.toLocaleString()}원
-              </td>
-            </tr>
-          </table>
+          {sseUrl && <SSEComponent sseUrl={sseUrl} idx={1} />}
         </div>
 
         <div style={{ height: '2%' }}></div>
@@ -465,7 +490,7 @@ function CompanyDetailPage() {
 
         <div className="row">
           <table class="">
-            {orderHistory.map((orderHistory, index) => (
+            {orderHistory.map((order, index) => (
               <React.Fragment key={index}>
                 <tr>
                   <td
@@ -476,7 +501,7 @@ function CompanyDetailPage() {
                       paddingLeft: '20px',
                     }}
                   >
-                    {orderHistory.date}
+                    {order.date}
                   </td>
                   <td
                     className="text-end"
@@ -486,9 +511,7 @@ function CompanyDetailPage() {
                       paddingRight: '20px',
                     }}
                   >
-                    <strong>
-                      주당 {orderHistory.pricePerShare.toLocaleString()}원
-                    </strong>
+                    <strong>주당 {order.amount.toLocaleString()}원</strong>
                   </td>
                 </tr>
                 <tr>
@@ -499,7 +522,7 @@ function CompanyDetailPage() {
                       paddingBottom: '15px',
                     }}
                   >
-                    <strong>매수 {orderHistory.quantity}주</strong>
+                    <strong>매수 {order.quantity}주</strong>
                   </td>
                   <td
                     style={{
@@ -510,7 +533,7 @@ function CompanyDetailPage() {
                     }}
                     className="text-end"
                   >
-                    {orderHistory.totalPrice.toLocaleString()}원
+                    {(order.amount * order.quantity).toLocaleString()}원
                   </td>
                 </tr>
               </React.Fragment>
