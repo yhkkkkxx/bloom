@@ -37,24 +37,26 @@ function Study() {
   }
   for (let i = 1; i <= lastDateOfMonth; i++) {
     daysInMonth.push(i);
-  }const getDayClass = (day, row, index) => {
+  }
+  const getDayClass = (day, row, index) => {
     if (!day) return 'empty';
-  
+
     const classNames = [];
-  
+
     // 날짜별 색상 지정
     if (day === todayDate) classNames.push('today');
     else if (day === 1 || day === 4 || day === 5) classNames.push('red');
-    else if (day === 2 || day === 3 || (day >= 6 && day <= 10)) classNames.push('purple');
-  
+    else if (day === 2 || day === 3 || (day >= 6 && day <= 10))
+      classNames.push('purple');
+
     // 이전/다음 날짜와 비교하여 둥근 모서리 적용
     if (row) {
       const prevDay = index > 0 ? row[index - 1] : null;
       const nextDay = index < row.length - 1 ? row[index + 1] : null;
-  
+
       const prevSame = prevDay && getBaseColor(prevDay) === getBaseColor(day);
       const nextSame = nextDay && getBaseColor(nextDay) === getBaseColor(day);
-  
+
       // 시작일: 왼쪽만 둥글게
       if (!prevSame && nextSame) classNames.push('rounded-left');
       // 끝일: 오른쪽만 둥글게
@@ -65,11 +67,10 @@ function Study() {
         classNames.push('rounded-right');
       }
     }
-  
+
     return classNames.join(' ');
   };
-  
-  
+
   // 기본 색상 반환 함수 (색상 판별용)
   const getBaseColor = (day) => {
     if (day === todayDate) return 'today';
@@ -77,7 +78,6 @@ function Study() {
     if (day === 2 || day === 3 || (day >= 6 && day <= 10)) return 'purple';
     return '';
   };
-  
 
   const backBtnClick = () => {
     navigate('/');
@@ -125,13 +125,15 @@ function Study() {
       <div style={{ height: '2%' }}></div>
       <div class="row">
         <div className="calendar-container">
-          <h3 className="text-center">{monthName}</h3>
+          <h3 className="text-center" style={{ fontSize: '1.2em' }}>
+            {monthName}
+          </h3>
           <table className="calendar-table">
             <thead>
               <tr>
                 {weekdays.map((weekday, index) => (
                   <th
-                    style={{ fontSize: '15px' }}
+                    style={{ fontSize: '14px' }}
                     key={index}
                     className="weekday"
                   >
@@ -162,7 +164,7 @@ function Study() {
             </tbody>
           </table>
         </div>
-        <div className="d-flex justify-content-center gap-2 mt-2 mb-4">
+        <div className="d-flex justify-content-center gap-2 mt-2 mb-5">
           <button
             className="btn btn-second"
             style={{ width: '48%', height: '50px' }}

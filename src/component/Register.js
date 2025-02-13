@@ -24,17 +24,20 @@ function Register() {
     axios
       .get(checkurl, {})
       .then((response) => {
-        console.log(response.data);
+        console.log(response.status);
         if (response.status === 200) {
           console.log(response.data);
           setCheckMsg('사용 가능한 아이디입니다.');
           setIsChecked(true);
         } else {
-          console.log(' 실패');
-          setCheckMsg('중복된 아이디가 존재합니다.');
+          setMsg('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(' 실패');
+        setCheckMsg('중복된 아이디가 존재합니다.');
+        // console.log(err)
+      });
   };
 
   let registerBtnClick = () => {
@@ -125,47 +128,56 @@ function Register() {
             회원가입
           </span>
         </p>
-      </div>
-      <div style={{ height: '10%' }}></div>
+        <div style={{ height: '10%' }}></div>
 
-      <div className="row text-start">
-        <p style={{ marginBottom: '5px' }}>
-          <span style={{ color: 'gray', fontSize: '1,0em' }}>아이디</span>
-        </p>
-      </div>
-      <span
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '10px',
-        }}
-      >
-        <input
-          type="email"
-          className="form-control form-control-user"
-          style={{ height: '45px', width: '63%' }}
-          id="exampleInputEmail"
-          aria-describedby="emailHelp"
-          placeholder="아이디 입력"
-          onChange={loginOnChange}
-          value={userId}
-        />
-        <button
-          className="btn btn-second"
-          type="button"
-          style={{ height: '45px', width: '35%' }}
-          onClick={checkDuplicated}
+        <div className="row text-start">
+          <p style={{ marginBottom: '5px' }}>
+            <span style={{ color: 'gray', fontSize: '1,0em' }}>아이디</span>
+          </p>
+        </div>
+        <span
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '10px',
+          }}
         >
-          중복 확인
-        </button>
-      </span>
+          <input
+            type="email"
+            className="form-control form-control-user"
+            style={{ height: '45px', width: '63%' }}
+            id="exampleInputEmail"
+            aria-describedby="emailHelp"
+            placeholder="아이디 입력"
+            onChange={loginOnChange}
+            value={userId}
+          />
+          <button
+            className="btn btn-second"
+            type="button"
+            style={{ height: '45px', width: '35%' }}
+            onClick={checkDuplicated}
+          >
+            중복 확인
+          </button>
+        </span>
+        <div style={{ height: '8%' }}></div>
+        <div
+          className="login-msg text-start"
+          style={{ fontSize: '0.9em', color: '#F65659' }}
+        >
+          {checkMsg}
+        </div>
+      </div>
+
+      {/* 
       <div style={{ height: '3%' }}></div>
       <div
         className="check-msg"
         style={{ fontSize: '0.9em', color: '#F65659' }}
       >
         {checkMsg}
-      </div>
+      </div> */}
       <div style={{ height: '3%' }}></div>
 
       <div className="row text-start">
