@@ -3,101 +3,149 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
-// const SSEComponent = ({ sseUrl, handleCompanyClick }) => {
-//   const [userName, setUserName] = useState('');
-//   const [availableCash, setAvailableCash] = useState(0);
-//   const [totalStockValue, setTotalStockValue] = useState(0);
-//   const [stocks, setStocks] = useState([]);
+const SSEComponent = ({ sseUrl, handleCompanyClick }) => {
+  const [userName, setUserName] = useState('');
+  const [availableCash, setAvailableCash] = useState(0);
+  const [totalStockValue, setTotalStockValue] = useState(0);
+  const [stocks, setStocks] = useState([]);
 
-//   const [error, setError] = useState(null);
+  const [error, setError] = useState(null);
 
-//   useEffect(() => {
-//     const eventSource = new EventSource(sseUrl);
+  useEffect(() => {
+    const eventSource = new EventSource(sseUrl);
 
-//     eventSource.onmessage = (event) => {
-//       try {
-//         const parsedData = JSON.parse(event.data);
-//         setUserName(parsedData.userName);
-//         setAvailableCash(parsedData.availableCash);
-//         setTotalStockValue(parsedData.totalStockValue);
-//         setStocks(parsedData.stocks);
-//       } catch (e) {
-//         setError('데이터 처리 중 오류 발생');
-//         console.error('데이터 파싱 오류:', e);
-//       }
-//     };
+    eventSource.onmessage = (event) => {
+      try {
+        const parsedData = JSON.parse(event.data);
+        setUserName(parsedData.userName);
+        setAvailableCash(parsedData.availableCash);
+        setTotalStockValue(parsedData.totalStockValue);
+        setStocks(parsedData.stocks);
+      } catch (e) {
+        setError('데이터 처리 중 오류 발생');
+        console.error('데이터 파싱 오류:', e);
+      }
+    };
 
-//     eventSource.onerror = () => {
-//       setError('서버 연결 오류 발생');
-//       eventSource.close();
-//     };
+    eventSource.onerror = () => {
+      setError('서버 연결 오류 발생');
+      eventSource.close();
+    };
 
-//     return () => {
-//       eventSource.close();
-//     };
-//   }, [sseUrl]);
+    return () => {
+      eventSource.close();
+    };
+  }, [sseUrl]);
 
-//   return (
-//     <>
-//       {stocks.map((stock, index) => (
-//         <React.Fragment key={index}>
-//           <tr>
-//             <td
-//               className="text-start"
-//               style={{
-//                 color: '',
-//                 fontSize: '',
-//                 paddingLeft: '20px',
-//                 paddingTop: '10px',
-//                 cursor: 'pointer',
-//               }}
-//               onClick={() => handleCompanyClick(stock.company)}
-//             >
-//               <strong>{stock.company}</strong>
-//             </td>
-//             <td
-//               className="text-end"
-//               style={{
-//                 color: '',
-//                 fontSize: '',
-//                 paddingRight: '20px',
-//                 paddingTop: '10px',
-//               }}
-//             >
-//               <strong>{stock.price.toLocaleString()}원</strong>
-//             </td>
-//           </tr>
-//           <tr>
-//             <td
-//               className="text-start"
-//               style={{
-//                 color: '',
-//                 fontSize: '10px',
-//                 paddingLeft: '20px',
-//                 paddingBottom: '5px',
-//               }}
-//             >
-//               {stock.shares}주
-//             </td>
+  console.log(userName, availableCash, totalStockValue, stocks);
+  return (
+    <>
+      <div className="row">
+        <table class="" style={{ marginLeft: '20px', marginRight: '20px' }}>
+          <tr>
+            <td
+              className="text-start"
+              style={{ color: 'gray', fontSize: '20px' }}
+            >
+              내 포인트
+            </td>
+            <td
+              className="text-start"
+              style={{ color: 'gray', fontSize: '20px' }}
+            >
+              내 보유 주식
+            </td>
+          </tr>
+          <tr>
+            <td className="text-start" style={{ fontSize: '25px' }}>
+              <strong>{availableCash.toLocaleString()}원</strong>
+            </td>
+            <td className="text-start" style={{ fontSize: '25px' }}>
+              <strong>{totalStockValue.toLocaleString()}원</strong>
+            </td>
+          </tr>
+        </table>
+      </div>
 
-//             <td
-//               className="text-end"
-//               style={{
-//                 color: stock.variation > 0 ? 'red' : 'blue',
-//                 fontSize: '10px',
-//                 paddingRight: '20px',
-//                 paddingBottom: '5px',
-//               }}
-//             >
-//               {stock.variation > 0 ? '▲' : '▼'}
-//               {Math.abs(stock.variation).toLocaleString()}원
-//             </td>
-//           </tr>
-//         </React.Fragment>
-//       ))}
-//     </>
-//   );
-// };
+      <div style={{ height: '2%' }}></div>
+
+      <div
+        class="card mb-4 rounded-3"
+        style={{ backgroundColor: '#eaeaff', border: 'none' }}
+      >
+        <div class="card-body">
+          <div className="row">
+            <table class="">
+              {/* {sseUrl && (
+                <SSEComponent
+                  sseUrl={sseUrl}
+                  handleCompanyClick={handleCompanyClick}
+                />
+              )} */}
+
+              {stocks.map((stock, index) => (
+                <React.Fragment key={index}>
+                  <tr>
+                    <td
+                      className="text-start"
+                      style={{
+                        color: '',
+                        fontSize: '',
+                        paddingLeft: '20px',
+                        paddingTop: '10px',
+                        cursor: 'pointer',
+                      }}
+                      onClick={() => handleCompanyClick(stock.company)}
+                    >
+                      <strong>{stock.company}</strong>
+                    </td>
+                    <td
+                      className="text-end"
+                      style={{
+                        color: '',
+                        fontSize: '',
+                        paddingRight: '20px',
+                        paddingTop: '10px',
+                      }}
+                    >
+                      <strong>{stock.price.toLocaleString()}원</strong>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td
+                      className="text-start"
+                      style={{
+                        color: '',
+                        fontSize: '10px',
+                        paddingLeft: '20px',
+                        paddingBottom: '5px',
+                      }}
+                    >
+                      {stock.shares}주
+                    </td>
+
+                    <td
+                      className="text-end"
+                      style={{
+                        color: stock.variation > 0 ? 'red' : 'blue',
+                        fontSize: '10px',
+                        paddingRight: '20px',
+                        paddingBottom: '5px',
+                      }}
+                    >
+                      {stock.variation > 0 ? '▲' : '▼'}
+                      {Math.abs(stock.variation).toLocaleString()}원
+                    </td>
+                  </tr>
+                </React.Fragment>
+              ))}
+            </table>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
 
 function StockSimulation() {
   const navigate = useNavigate();
@@ -172,6 +220,12 @@ function StockSimulation() {
           </h5>
         </div>
         <div style={{ height: '1%' }}></div>
+        {/* {sseUrl && (
+          <SSEComponent
+            sseUrl={sseUrl}
+            handleCompanyClick={handleCompanyClick}
+          />
+        )} */}
 
         <div className="row">
           <table class="" style={{ marginLeft: '20px', marginRight: '20px' }}>
@@ -200,8 +254,7 @@ function StockSimulation() {
           </table>
         </div>
 
-
-        <div style={{ height: '2%' }}></div>  
+        <div style={{ height: '2%' }}></div>
 
         <div
           class="card mb-4 rounded-3"
@@ -210,9 +263,14 @@ function StockSimulation() {
           <div class="card-body">
             <div className="row">
               <table class="">
-                {/* {sseUrl && <SSEComponent sseUrl={sseUrl} handleCompanyClick={handleCompanyClick} />} */}
+                {/* {sseUrl && (
+                  <SSEComponent
+                    sseUrl={sseUrl}
+                    handleCompanyClick={handleCompanyClick}
+                  />
+                )} */}
 
-                {/* {stocks.map((stock, index) => (
+                {stocks.map((stock, index) => (
                   <React.Fragment key={index}>
                     <tr>
                       <td
@@ -267,7 +325,7 @@ function StockSimulation() {
                       </td>
                     </tr>
                   </React.Fragment>
-                ))} */}
+                ))}
               </table>
             </div>
           </div>
