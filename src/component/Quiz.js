@@ -11,7 +11,7 @@ function Quiz() {
       question:
         '해외주식의 배당금에는 해당 국가의 세금이 원천징수되고, 국내 세금도 추가로 납부해야 한다.',
       options: ['O', 'X'],
-      answer: 0, // 'O'가 첫 번째 옵션이라 인덱스 0
+      answer: 0,
     },
     {
       question: '다음 중 ‘복리’의 개념을 가장 잘 설명하는 것은?',
@@ -21,7 +21,7 @@ function Quiz() {
         '이전 이자에도 추가로 이자가 붙는 방식',
         '투자한 원금이 일정하게 유지되는 방식',
       ],
-      answer: 2, // '이전 이자에도 추가로 이자가 붙는 방식' -> 인덱스 2
+      answer: 2,
     },
     { question: '3 + 3 = ?', options: ['5', '6', '7', '8'], answer: 1 },
     { question: '4 + 4 = ?', options: ['6', '7', '8', '9'], answer: 2 },
@@ -33,7 +33,7 @@ function Quiz() {
     {
       question: '10 + 10 = ?',
       options: ['18', '19', '20', '21'],
-      answer: 2, // '20' -> 인덱스 2
+      answer: 2,
     },
   ];
 
