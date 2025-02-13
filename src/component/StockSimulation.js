@@ -1,18 +1,120 @@
 import '../styles/StockSimulation.css';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+
+// const SSEComponent = ({ sseUrl, handleCompanyClick }) => {
+//   const [userName, setUserName] = useState('');
+//   const [availableCash, setAvailableCash] = useState(0);
+//   const [totalStockValue, setTotalStockValue] = useState(0);
+//   const [stocks, setStocks] = useState([]);
+
+//   const [error, setError] = useState(null);
+
+//   useEffect(() => {
+//     const eventSource = new EventSource(sseUrl);
+
+//     eventSource.onmessage = (event) => {
+//       try {
+//         const parsedData = JSON.parse(event.data);
+//         setUserName(parsedData.userName);
+//         setAvailableCash(parsedData.availableCash);
+//         setTotalStockValue(parsedData.totalStockValue);
+//         setStocks(parsedData.stocks);
+//       } catch (e) {
+//         setError('데이터 처리 중 오류 발생');
+//         console.error('데이터 파싱 오류:', e);
+//       }
+//     };
+
+//     eventSource.onerror = () => {
+//       setError('서버 연결 오류 발생');
+//       eventSource.close();
+//     };
+
+//     return () => {
+//       eventSource.close();
+//     };
+//   }, [sseUrl]);
+
+//   return (
+//     <>
+//       {stocks.map((stock, index) => (
+//         <React.Fragment key={index}>
+//           <tr>
+//             <td
+//               className="text-start"
+//               style={{
+//                 color: '',
+//                 fontSize: '',
+//                 paddingLeft: '20px',
+//                 paddingTop: '10px',
+//                 cursor: 'pointer',
+//               }}
+//               onClick={() => handleCompanyClick(stock.company)}
+//             >
+//               <strong>{stock.company}</strong>
+//             </td>
+//             <td
+//               className="text-end"
+//               style={{
+//                 color: '',
+//                 fontSize: '',
+//                 paddingRight: '20px',
+//                 paddingTop: '10px',
+//               }}
+//             >
+//               <strong>{stock.price.toLocaleString()}원</strong>
+//             </td>
+//           </tr>
+//           <tr>
+//             <td
+//               className="text-start"
+//               style={{
+//                 color: '',
+//                 fontSize: '10px',
+//                 paddingLeft: '20px',
+//                 paddingBottom: '5px',
+//               }}
+//             >
+//               {stock.shares}주
+//             </td>
+
+//             <td
+//               className="text-end"
+//               style={{
+//                 color: stock.variation > 0 ? 'red' : 'blue',
+//                 fontSize: '10px',
+//                 paddingRight: '20px',
+//                 paddingBottom: '5px',
+//               }}
+//             >
+//               {stock.variation > 0 ? '▲' : '▼'}
+//               {Math.abs(stock.variation).toLocaleString()}원
+//             </td>
+//           </tr>
+//         </React.Fragment>
+//       ))}
+//     </>
+//   );
+// };
 
 function StockSimulation() {
   const navigate = useNavigate();
   const [myPoint, setMyPoint] = useState(10000000);
   const [myStock, setMyStock] = useState(500000);
+  const [sseUrl, setSseUrl] = useState('');
 
   const stocks = [
     { company: '감자 주식회사', shares: 100, price: 120000, variation: 100 },
     { company: '(주)딸기사세요', shares: 20, price: 223040, variation: 500 },
     { company: '나주배랑께', shares: 10, price: 13013, variation: -800 },
   ];
+
+  useEffect(() => {
+    const userid = 1;
+    setSseUrl(`http://13.125.19.104:8080/portfolio/stream?userId=${userid}`);
+  }, []);
 
   const backBtnClick = () => {
     navigate('/study');
@@ -107,7 +209,9 @@ function StockSimulation() {
           <div class="card-body">
             <div className="row">
               <table class="">
-                {stocks.map((stock, index) => (
+                {/* {sseUrl && <SSEComponent sseUrl={sseUrl} handleCompanyClick={handleCompanyClick} />} */}
+
+                {/* {stocks.map((stock, index) => (
                   <React.Fragment key={index}>
                     <tr>
                       <td
@@ -162,7 +266,7 @@ function StockSimulation() {
                       </td>
                     </tr>
                   </React.Fragment>
-                ))}
+                ))} */}
               </table>
             </div>
           </div>
