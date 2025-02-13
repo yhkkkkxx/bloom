@@ -25,7 +25,7 @@ const SSEComponent = ({ url }) => {
     eventSource.onmessage = (event) => {
       try {
         const parsedData = JSON.parse(event.data);
-        setData((prevData) => [...prevData, parsedData]); // 기존 데이터에 추가
+        setData((prevData) => [...prevData, parsedData]);
       } catch (e) {
         setError('데이터 처리 중 오류 발생');
         console.error('데이터 파싱 오류:', e);
@@ -42,13 +42,7 @@ const SSEComponent = ({ url }) => {
     };
   }, [url]);
 
-  return (
-    <div>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <h3>SSE 실시간 데이터</h3>
-      <pre>{JSON.stringify(data, null, 2)}</pre>
-    </div>
-  );
+  console.log(data);
 };
 
 function CompanyDetailPage() {
@@ -63,24 +57,14 @@ function CompanyDetailPage() {
   const [profitRate, setProfitRate] = useState(25);
   const [buyPrice, setBuyPrice] = useState(100000);
 
-  // useEffect(() => {
-  //   if (company) {
-  //     const userid = 1;
-  //     setUrl(
-  //       `https://${process.env.REACT_APP_BESERVERURI}/transaction/${userid}/filter?companyName=${company.company}`
-  //     );
-  //     SSEComponent(url);
-  //   }
-  // }, [company]);
-
-
   useEffect(() => {
     if (company) {
       const userid = 1;
-      setUrl(`http://${process.env.REACT_APP_BESERVERURI}/transaction/${userid}/filter?companyName=${company.company}`);
+      setUrl(
+        `http://${process.env.REACT_APP_BESERVERURI}/transaction/${userid}/filter?companyName=${company.company}`
+      );
     }
   }, [company]);
-
 
   const backBtnClick = () => {
     navigate('/study/stock_simulation');
@@ -227,6 +211,8 @@ function CompanyDetailPage() {
           <h5 style={{ color: '#495057', marginBottom: '5px' }}>
             {company.company}
           </h5>
+          {url && <SSEComponent url={url} />}
+
           <p>
             <span style={{ fontSize: '1.8em' }}>
               <strong>{company.price.toLocaleString()}원</strong>

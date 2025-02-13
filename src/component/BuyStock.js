@@ -1,5 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
+import axios from 'axios';
 
 function BuyStock() {
   const navigate = useNavigate();
@@ -8,6 +9,8 @@ function BuyStock() {
   const { company } = location.state || {};
   const [quantity, setQuantity] = useState('');
 
+  let url = `http://${process.env.REACT_APP_BESERVERURI}/transaction`;
+
   if (!company) {
     return <p>회사를 찾을 수 없습니다.</p>;
   }
@@ -15,6 +18,28 @@ function BuyStock() {
     navigate('/study/stock_simulation/company/:companyName', {
       state: { company: company },
     });
+  };
+
+  const buyBtnClick = () => {
+    const quan = Number(quantity);
+    const comp = company.company;
+    console.log(company.company, quan);
+    axios
+      .post(url, {
+        userId: 1,
+        companyName: comp,
+        amount: 1000,
+        quantity: quan,
+        type: '매수',
+        date: '2025-02-14',
+      })
+      .then((response) => {
+        console.log(response.data);
+        navigate('/study/stock_simulation/company/:companyName', {
+          state: { company: company },
+        });
+      })
+      .catch();
   };
 
   const inputChange = (e) => {
@@ -103,6 +128,7 @@ function BuyStock() {
           <button
             className="btn btn-second"
             style={{ width: '100%', height: '50px' }}
+            onClick={buyBtnClick}
           >
             매수하기
           </button>
