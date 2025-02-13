@@ -200,7 +200,8 @@ function StockSimulation() {
           </table>
         </div>
 
-        <div style={{ height: '2%' }}></div>
+
+        <div style={{ height: '2%' }}></div>  
 
         <div
           class="card mb-4 rounded-3"
