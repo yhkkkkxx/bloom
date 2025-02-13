@@ -97,7 +97,7 @@ const SSEComponent = ({ sseUrl, handleCompanyClick }) => {
                       }}
                       onClick={() => handleCompanyClick(stock.company)}
                     >
-                      <strong>{stock.company}</strong>
+                      <strong>{stock.gap}</strong>
                     </td>
                     <td
                       className="text-end"
@@ -108,7 +108,7 @@ const SSEComponent = ({ sseUrl, handleCompanyClick }) => {
                         paddingTop: '10px',
                       }}
                     >
-                      <strong>{stock.price.toLocaleString()}원</strong>
+                      <strong>{stock.evaluationAmount.toLocaleString()}원</strong>
                     </td>
                   </tr>
                   <tr>
@@ -127,14 +127,14 @@ const SSEComponent = ({ sseUrl, handleCompanyClick }) => {
                     <td
                       className="text-end"
                       style={{
-                        color: stock.variation > 0 ? 'red' : 'blue',
+                        color: stock.gap > 0 ? 'red' : 'blue',
                         fontSize: '10px',
                         paddingRight: '20px',
                         paddingBottom: '5px',
                       }}
                     >
-                      {stock.variation > 0 ? '▲' : '▼'}
-                      {Math.abs(stock.variation).toLocaleString()}원
+                      {stock.gap > 0 ? '▲' : '▼'}
+                      {Math.abs(stock.gap).toLocaleString()}원
                     </td>
                   </tr>
                 </React.Fragment>
@@ -263,12 +263,12 @@ function StockSimulation() {
           <div class="card-body">
             <div className="row">
               <table class="">
-                {/* {sseUrl && (
+                {sseUrl && (
                   <SSEComponent
                     sseUrl={sseUrl}
                     handleCompanyClick={handleCompanyClick}
                   />
-                )} */}
+                )}
 
                 {stocks.map((stock, index) => (
                   <React.Fragment key={index}>
