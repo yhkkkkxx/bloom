@@ -97,7 +97,7 @@ const SSEComponent = ({ sseUrl, handleCompanyClick }) => {
                       }}
                       onClick={() => handleCompanyClick(stock.company)}
                     >
-                      <strong>{stock.gap}</strong>
+                      <strong>{stock.companyName}</strong>
                     </td>
                     <td
                       className="text-end"
@@ -108,7 +108,9 @@ const SSEComponent = ({ sseUrl, handleCompanyClick }) => {
                         paddingTop: '10px',
                       }}
                     >
-                      <strong>{stock.evaluationAmount.toLocaleString()}원</strong>
+                      <strong>
+                        {stock.evaluationAmount.toLocaleString()}원
+                      </strong>
                     </td>
                   </tr>
                   <tr>
@@ -121,7 +123,7 @@ const SSEComponent = ({ sseUrl, handleCompanyClick }) => {
                         paddingBottom: '5px',
                       }}
                     >
-                      {stock.shares}주
+                      {stock.holdingQuantity}주
                     </td>
 
                     <td
@@ -227,7 +229,7 @@ function StockSimulation() {
           />
         )} */}
 
-        <div className="row">
+        {/* <div className="row">
           <table class="" style={{ marginLeft: '20px', marginRight: '20px' }}>
             <tr>
               <td
@@ -252,9 +254,9 @@ function StockSimulation() {
               </td>
             </tr>
           </table>
-        </div>
+        </div> */}
 
-        <div style={{ height: '2%' }}></div>
+        {/* <div style={{ height: '2%' }}></div> */}
 
         <div
           class="card mb-4 rounded-3"
@@ -272,7 +274,7 @@ function StockSimulation() {
 
                 {stocks.map((stock, index) => (
                   <React.Fragment key={index}>
-                    <tr>
+                    {/* <tr>
                       <td
                         className="text-start"
                         style={{
@@ -282,7 +284,7 @@ function StockSimulation() {
                           paddingTop: '10px',
                           cursor: 'pointer',
                         }}
-                        onClick={() => handleCompanyClick(stock.company)}
+                        onClick={() x=> handleCompanyClick(stock.company)}
                       >
                         <strong>{stock.company}</strong>
                       </td>
@@ -323,7 +325,7 @@ function StockSimulation() {
                         {stock.variation > 0 ? '▲' : '▼'}
                         {Math.abs(stock.variation).toLocaleString()}원
                       </td>
-                    </tr>
+                    </tr> */}
                   </React.Fragment>
                 ))}
               </table>

@@ -6,6 +6,7 @@ import Layout from './component/Layout';
 import Login from './component/Login';
 import Register from './component/Register';
 import Home from './component/Home';
+import Main from './component/Main';
 import Send from './component/Send';
 import TransactionHistory from './component/TransactionHistory';
 import Study from './component/Study';
@@ -34,6 +35,7 @@ function App() {
           <Route path="/login/register" element={<Register />} />
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
+            {/* <Route index element={<Main />} /> */}
             <Route path="/account/send" element={<Send />} />
             <Route
               path="/account/transaction_history"

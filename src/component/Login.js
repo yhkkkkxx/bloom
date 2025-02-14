@@ -34,58 +34,58 @@ function Login() {
       setMsg('아이디와 비밀번호를 모두 입력해주세요.');
       return;
     }
-    // setMsg('로그인 성공!');
-    // setTimeout(() => {
-    //   navigate('/');
-    // }, 1000);
+    setMsg('로그인 성공!');
+    setTimeout(() => {
+      navigate('/');
+    }, 1000);
 
-    const login = (userid, password) => {
-      axios
-        .post(
-          url,
-          {
-            userId: userid,
-            password: password,
-          }
-          // { withCredentials: true }
-        )
-        .then((response) => {
-          if (response.status === 200) {
-            const { username } = response.data;
-            console.log(response.data);
-            console.log(username);
+    // const login = (userid, password) => {
+    //   axios
+    //     .post(
+    //       url,
+    //       {
+    //         userId: userid,
+    //         password: password,
+    //       }
+    //       // { withCredentials: true }
+    //     )
+    //     .then((response) => {
+    //       if (response.status === 200) {
+    //         const { username } = response.data;
+    //         console.log(response.data);
+    //         console.log(username);
 
-            setLocalStorageItem('authState', {
-              userid: userid,
-              username: username,
-              isLogin: true,
-            });
+    //         setLocalStorageItem('authState', {
+    //           userid: userid,
+    //           username: username,
+    //           isLogin: true,
+    //         });
 
-            dispatch({
-              type: 'LOGIN',
-              value: {
-                userid: userid,
-                username: username,
-                isLogin: true,
-              },
-            });
+    //         dispatch({
+    //           type: 'LOGIN',
+    //           value: {
+    //             userid: userid,
+    //             username: username,
+    //             isLogin: true,
+    //           },
+    //         });
 
-            setMsg('로그인 성공!');
-            setTimeout(() => {
-              navigate('/');
-            }, 1000);
-          } else {
-            console.log('로그인 실패');
-            setMsg('아이디나 비밀번호가 잘못되었습니다.');
-          }
-        })
-        .catch((error) => {
-          console.error('로그인 중 오류 발생:', error);
-          setMsg('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
-        });
-    };
+    //         setMsg('로그인 성공!');
+    //         setTimeout(() => {
+    //           navigate('/');
+    //         }, 1000);
+    //       } else {
+    //         console.log('로그인 실패');
+    //         setMsg('아이디나 비밀번호가 잘못되었습니다.');
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       console.error('로그인 중 오류 발생:', error);
+    //       setMsg('서버 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
+    //     });
+    // };
 
-    login(id, pw);
+    // login(id, pw);
   };
 
   const registerBtnClick = () => {

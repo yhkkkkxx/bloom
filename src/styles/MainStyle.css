@@ -1,0 +1,134 @@
+/* .bg_color {
+    position: absolute;
+    top: -10px;
+    left: 271px;
+    right: 20px;
+    background-color: #6262f4;
+    padding-top: 1000px;
+    margin-right: 250px;
+    border-color: red;
+  } */
+  
+  .Name {
+    position: absolute;
+    color: white;
+    margin-left: 115px;
+    margin-top: 70px;
+  }
+  .top-margin {
+    margin-top: 30px;
+  }
+  .button-back {
+    position: absolute;
+    filter: brightness(1000%);
+  }
+  .hapari {
+    /* position: absolute; */
+    /* margin-top: 120px; */
+    /* margin-left: -140px; */
+  }
+  
+  video {
+    pointer-events: none; /* 커서가 비디오 요소를 클릭할 수 없도록 함 */
+  }
+  
+  video:hover {
+    pointer-events: all; /* 커서가 올라갔을 때 비디오에서 클릭 가능하게 허용 (만약 다른 이벤트가 필요하다면 추가) */
+  }
+  
+  video::-webkit-media-controls {
+    display: none; /* 재생바 및 컨트롤러 숨기기 */
+  }
+  
+  .progress-bar {
+    position: absolute;
+    margin-top: 480px;
+    margin-left: 45px;
+    max-width: 290px;
+    background-color: rgba(255, 255, 255, 0.4);
+    padding-top: 16px;
+    border-radius: 10px;
+  }
+  
+  .stock {
+    position: absolute;
+    background-color: rgba(255, 255, 255);
+    padding-top: 25px;
+    padding-bottom: 5px;
+    border-radius: 14px;
+    margin-top: 525px;
+    max-width: 360px;
+    margin-left: 10px;
+  }
+  .stock p {
+    margin-left: 60px;
+  }
+  .stock img {
+    position: absolute;
+    top: 113px;
+    left: 25px;
+    margin-top: -90px;
+  }
+  
+  .stock img:nth-last-child(1) {
+    left: 310px;
+    scale: 70%;
+  }
+  .study {
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.7);
+    padding-top: 25px;
+    padding-bottom: 5px;
+    border-radius: 14px;
+    font-weight: 800;
+    margin-left: 10px;
+    max-width: 360px;
+    margin-top: 615px;
+  }
+  
+  .study p {
+    margin-left: 60px;
+  }
+  
+  .study img {
+    position: absolute;
+    top: 113px;
+    left: 25px;
+    margin-top: -90px;
+    margin-bottom: s;
+  }
+  
+  .study img:nth-last-child(1) {
+    left: 310px;
+    scale: 70%;
+  }
+  
+  .note {
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.7);
+    padding-top: 25px;
+    padding-bottom: 5px;
+    border-radius: 14px;
+    font-weight: 800;
+    margin-left: 10px;
+    max-width: 360px;
+    margin-top: 705px;
+  }
+  
+  .note p {
+    margin-left: 60px;
+  }
+  
+  .note img {
+    position: absolute;
+    top: 113px;
+    left: 25px;
+    margin-top: -90px;
+    margin-bottom: s;
+  }
+  
+  .note img:nth-last-child(1) {
+    left: 310px;
+    scale: 70%;
+  }
+  

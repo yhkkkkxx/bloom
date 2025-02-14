@@ -202,6 +202,7 @@ function CompanyDetailPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const { company } = location.state || {};
+  console.log(company);
 
   const [sseUrl, setSseUrl] = useState('');
   const [url, setUrl] = useState('');
@@ -348,9 +349,7 @@ function CompanyDetailPage() {
         <div style={{ height: '2%' }}></div>
 
         <div className="row text-start">
-          <h5 style={{ color: '#495057', marginBottom: '5px' }}>
-            {company.company}
-          </h5>
+          <h5 style={{ color: '#495057', marginBottom: '5px' }}>{company}</h5>
           {sseUrl && <SSEComponent sseUrl={sseUrl} idx={0} />}
           {/* <div>
             <p>
