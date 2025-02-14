@@ -97,7 +97,7 @@ const SSEComponent = ({ sseUrl, handleCompanyClick }) => {
                       }}
                       onClick={() => handleCompanyClick(stock.company)}
                     >
-                      <strong>{stock.companyName}</strong>
+                      <strong>{stock.company}</strong>
                     </td>
                     <td
                       className="text-end"
@@ -108,9 +108,7 @@ const SSEComponent = ({ sseUrl, handleCompanyClick }) => {
                         paddingTop: '10px',
                       }}
                     >
-                      <strong>
-                        {stock.evaluationAmount.toLocaleString()}원
-                      </strong>
+                      <strong>{stock.price.toLocaleString()}원</strong>
                     </td>
                   </tr>
                   <tr>
@@ -123,20 +121,20 @@ const SSEComponent = ({ sseUrl, handleCompanyClick }) => {
                         paddingBottom: '5px',
                       }}
                     >
-                      {stock.holdingQuantity}주
+                      {stock.shares}주
                     </td>
 
                     <td
                       className="text-end"
                       style={{
-                        color: stock.gap > 0 ? 'red' : 'blue',
+                        color: stock.variation > 0 ? 'red' : 'blue',
                         fontSize: '10px',
                         paddingRight: '20px',
                         paddingBottom: '5px',
                       }}
                     >
-                      {stock.gap > 0 ? '▲' : '▼'}
-                      {Math.abs(stock.gap).toLocaleString()}원
+                      {stock.variation > 0 ? '▲' : '▼'}
+                      {Math.abs(stock.variation).toLocaleString()}원
                     </td>
                   </tr>
                 </React.Fragment>
@@ -163,7 +161,9 @@ function StockSimulation() {
 
   useEffect(() => {
     const userid = 1;
-    setSseUrl(`http://13.125.19.104:8080/portfolio/stream?userId=${userid}`);
+    setSseUrl(
+      `https://d477-218-209-242-18.ngrok-free.app/portfolio/stream?userId=${userid}`
+    );
   }, []);
 
   const backBtnClick = () => {
@@ -229,7 +229,7 @@ function StockSimulation() {
           />
         )} */}
 
-        {/* <div className="row">
+        <div className="row">
           <table class="" style={{ marginLeft: '20px', marginRight: '20px' }}>
             <tr>
               <td
@@ -254,9 +254,9 @@ function StockSimulation() {
               </td>
             </tr>
           </table>
-        </div> */}
+        </div>
 
-        {/* <div style={{ height: '2%' }}></div> */}
+        <div style={{ height: '2%' }}></div>
 
         <div
           class="card mb-4 rounded-3"
@@ -265,16 +265,16 @@ function StockSimulation() {
           <div class="card-body">
             <div className="row">
               <table class="">
-                {sseUrl && (
+                {/* {sseUrl && (
                   <SSEComponent
                     sseUrl={sseUrl}
                     handleCompanyClick={handleCompanyClick}
                   />
-                )}
+                )} */}
 
                 {stocks.map((stock, index) => (
                   <React.Fragment key={index}>
-                    {/* <tr>
+                    <tr>
                       <td
                         className="text-start"
                         style={{
@@ -284,7 +284,7 @@ function StockSimulation() {
                           paddingTop: '10px',
                           cursor: 'pointer',
                         }}
-                        onClick={() x=> handleCompanyClick(stock.company)}
+                        onClick={() => handleCompanyClick(stock.company)}
                       >
                         <strong>{stock.company}</strong>
                       </td>
@@ -325,7 +325,7 @@ function StockSimulation() {
                         {stock.variation > 0 ? '▲' : '▼'}
                         {Math.abs(stock.variation).toLocaleString()}원
                       </td>
-                    </tr> */}
+                    </tr>
                   </React.Fragment>
                 ))}
               </table>
