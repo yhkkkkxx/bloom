@@ -10,7 +10,6 @@ function Home() {
 
   let { username, isLogin } = getLocalStorageItem('authState');
 
-
   const sendBtnClick = () => {
     navigate('/account/send');
   };
@@ -95,6 +94,28 @@ function Home() {
       </div>
 
       <div style={{ height: '2%' }}></div>
+
+      <div class="row card shadow mb-4 rounded-3">
+        <div class="card-body">
+          <div style={{ height: '20px' }}></div>
+          <h5 style={{ fontWeight: '900' }}>
+            직전에 서버가 터지고, <br />
+            제출을 못해서 이렇게나마 전달드립니다.
+            <br />
+            죄송합니다.
+          </h5>
+        </div>
+        <div>
+          <h2>
+            <a href="https://sincere-peak-0c7.notion.site/3-19a043325ab180879a80c5d3036c4c83">
+              ▶️ 노션 링크 ◀️
+            </a>
+          </h2>
+          <div style={{ height: '20px' }}></div>
+        </div>
+      </div>
+
+      <div style={{ height: '4%' }}></div>
       <div className="row h-25 ">
         <h5 className="text-start">
           <strong>이벤트</strong>
